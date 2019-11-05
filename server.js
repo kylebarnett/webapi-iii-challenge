@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const postRouter = require('./posts/postRouter');
 const userRouter = require('./users/userRouter');
+server.use(express.json());
 server.use(logger);
 
 server.use('/api/posts', postRouter);
