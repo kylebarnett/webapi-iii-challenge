@@ -60,6 +60,7 @@ function validatePostId(req, res, next) {
         next()
       } else {
         res.status(400).json({ message: 'Post does not exist.' })
+        next();
       }
     })
     .catch(err => {
