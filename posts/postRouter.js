@@ -33,7 +33,20 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-
+  // const updated = { ...req.body, id: req.params.id }
+  const body = req.body;
+  const id = req.params.id;
+  db.update(id, body)
+    .then(updated => {
+      if (updated) {
+        res.status(200).json(updated)
+      } else {
+        res.status(404).json({ message: 'The post could not be found.' })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error updating post.' })
+    })
 });
 
 // custom middleware
