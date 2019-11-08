@@ -6,8 +6,8 @@ router.post('/', validateUser, (req, res) => {
   res.status(201).json(user)
 });
 
-router.post('/:id/posts', validateUserId, (req, res) => {
-
+router.post('/:id/posts', validatePost, (req, res) => {
+  res.status(200).json(bodyInfo)
 });
 
 router.get('/', (req, res) => {
@@ -26,7 +26,14 @@ router.get('/:id', validateUserId, (req, res) => {
 });
 
 router.get('/:id/posts', validateUserId, (req, res) => {
-
+  const {id} = req.params;
+  db.getUserPosts(id)
+    .then(posts => {
+      res.status(200).json(posts);
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Error retrieving user posts", err });
+    });
 });
 
 router.delete('/:id', validateUserId, (req, res) => {
@@ -96,7 +103,8 @@ function validateUser(req, res, next) {
 };
 
 function validatePost(req, res, next) {
-
+  const bodyInfo = req.body;
+  bodyInfo.text ? next() : res.status(400).json({ message: 'Missing text.' })
 };
 
 module.exports = router;
